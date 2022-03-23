@@ -1,0 +1,12 @@
+{
+  "name": "whatsapp",
+  "version": "1.0.0",
+  "description": "whatsapp chat backup",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ANWF",
+  "license": "MIT"
+}
