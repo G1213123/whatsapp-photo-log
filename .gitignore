@@ -4,6 +4,8 @@
 # Stores VSCode versions used for testing VSCode extensions
 .vscode
 
+.gitignore
+
 download/
 download/19_Mar_2022_9_32_9_FEF6D54BFFF7817E91805C36897E1FF9.jpg
 download/21_Mar_2022_8_34_17_788F936175D336B9399DFDF7F5095211.jpg
@@ -1148,3 +1150,4 @@ download/WhatsappChats.csv
 .wwebjs_auth/session/pnacl/0.57.44.2492/_platform_specific/x86_64/pnacl_public_x86_64_libpnacl_irt_shim_dummy_a
 .wwebjs_auth/session/pnacl/0.57.44.2492/_platform_specific/x86_64/pnacl_public_x86_64_pnacl_llc_nexe
 .wwebjs_auth/session/pnacl/0.57.44.2492/_platform_specific/x86_64/pnacl_public_x86_64_pnacl_sz_nexe
+.gitignore
