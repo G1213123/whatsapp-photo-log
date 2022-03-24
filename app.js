@@ -154,7 +154,7 @@ client.on('ready', async () => {
             }
         }
         console.table(safety_case)
-        FileSystem.writeFile(process.env.EXPORT_PATH + 'WhatsappChats.csv', convertToCSV(safety_case), 'utf8', function (err) {
+        FileSystem.writeFile(process.env.EXPORT_PATH + 'WhatsappChats.csv', "\ufeff" + convertToCSV(safety_case), 'utf8', function (err) {
             if (err) {
                 console.log(err)
             }
