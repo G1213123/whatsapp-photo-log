@@ -1,6 +1,9 @@
 # dotenv environment variable files
 .env
 
+# string data
+.data
+
 # Stores VSCode versions used for testing VSCode extensions
 .vscode
 
