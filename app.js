@@ -4,8 +4,17 @@ const mkdirp = require('mkdirp');
 const FileSystem = require('fs');
 const getDirName = require('path').dirname;
 require('dotenv').config();
+const fetch = require('node-fetch')
 
 
+FileSystem.readFile(process.env.WHITELIST, 'utf8', (err, data) => {
+    if (err) {
+        console.error(err)
+        return
+    }
+    //console.log(data)
+    whitelist = data.replace(/\n|\r/g, "").split(',')
+})
 
 const client = new Client({
     authStrategy: new LocalAuth(),
@@ -103,44 +112,54 @@ client.on('ready', async () => {
         var safety_case = []
         var caseNum = 0
         //loop messages
-        for ([index,message] of messages.entries()) {
+        for ([index, message] of messages.entries()) {
             console.log(message)
 
             //if have media
             if (message.hasMedia) {
                 var mediaFileName = timeConverter(message.timestamp) + '_' + message.id.id + '.jpg';
-                
-                    //download media
-                    media = await message.downloadMedia()
-                    downloadtopath(media, message)
-                
+
+                //download media
+                media = await message.downloadMedia()
+                downloadtopath(media, message)
+
                 //record media saved name
                 message['mediaFileName'] = mediaFileName
                 //if the message is quoting another message
-                if (message.hasQuotedMsg) {
+                if (message.hasQuotedMsg && !whitelist.includes(message.author.replace('@c.us', ''))) {
                     var quotedMsg = await message.getQuotedMessage()
                     var responseTo = messages.find(msg => {
                         return msg.id._serialized === quotedMsg.id._serialized
                     })
-                    if (responseTo == null){
+                    if (responseTo == null) {
                         message['caseType'] = 'R_' + quotedMsg.id._serialized
-                    }else{message['caseType'] = 'R_' + responseTo.caseType}
-                    
+                    } else { message['caseType'] = 'R_' + responseTo.caseType }
+
                 } else {
-                    //handle text is seperated from picture
-                    if (message.body == ''){
-                        if (messages[index+1].body !== null && messages[index+1].author == message.author && messages[index+1].hasMedia == false){
-                            message.body = messages[index+1].body
+                    try {
+                        //handle text is seperated from picture
+                        if (message.body == '') {
+                            if (messages[index + 1].body !== null && messages[index + 1].author == message.author && messages[index + 1].hasMedia == false) {
+                                message.body = messages[index + 1].body
+                            }
                         }
+                        caseNum += 1
+                        message['caseType'] = 'C' + caseNum
+                        if (message.body.match('\d+.\d+(.\d+)?')) {
+                            message['score'] = message.body.match('\d+.\d+(.\d+)?').join(' & ')
+                        } else {
+                            message['score'] = ''
+                        }
+                    } catch (error) {
+                        console.log(error)
                     }
-                    caseNum += 1
-                    message['caseType'] = 'C' + caseNum
                 }
 
                 //push chat content into selected cases
                 safety_case.push({
                     'author': message.author,
                     'body': message.body,
+                    'score': message.score,
                     'caseType': message.caseType,
                     'deviceType': message.deviceType,
                     'from': message.from,
@@ -165,5 +184,4 @@ client.on('ready', async () => {
     )
 
 })
-
 
