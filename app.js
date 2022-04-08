@@ -45,7 +45,7 @@ function timeConverter(UNIX_timestamp) {
 }
 
 function convertToCSV(items) {
-    const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+    const replacer = (key, value) => value == null ? '' : value // specify how you want to handle null values here
     const header = Object.keys(items[0])
     const csv = [
         header.join(','), // header row first
@@ -138,15 +138,15 @@ client.on('ready', async () => {
                 } else {
                     try {
                         //handle text is seperated from picture
-                        if (message.body == '') {
+                        if (message.body == '' && messages[index +1]) {
                             if (messages[index + 1].body !== null && messages[index + 1].author == message.author && messages[index + 1].hasMedia == false) {
                                 message.body = messages[index + 1].body
                             }
                         }
                         caseNum += 1
                         message['caseType'] = 'C' + caseNum
-                        if (message.body.match('\d+.\d+(.\d+)?')) {
-                            message['score'] = message.body.match('\d+.\d+(.\d+)?').join(' & ')
+                        if (message.body.match(/\d+\.\d+(\.\d+)?/gm)) {
+                            message['score'] = message.body.match(/\d+\.\d+(\.\d+)?/gm).join(' & ')
                         } else {
                             message['score'] = ''
                         }
