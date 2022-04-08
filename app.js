@@ -4,7 +4,7 @@ const mkdirp = require('mkdirp');
 const FileSystem = require('fs');
 const getDirName = require('path').dirname;
 require('dotenv').config();
-const fetch = require('node-fetch')
+
 
 
 FileSystem.readFile(process.env.WHITELIST, 'utf8', (err, data) => {
