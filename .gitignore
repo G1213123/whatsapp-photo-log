@@ -1,0 +1,13 @@
+.vscode
+
+.wwebjs_auth
+
+.env
+
+.gitigure
+
+whitelist.data
+
+node_modules/
+
+package-lock.json
